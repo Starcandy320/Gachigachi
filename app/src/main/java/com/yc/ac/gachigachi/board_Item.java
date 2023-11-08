@@ -19,7 +19,7 @@ public class board_Item {
         return subText1;
     }
 
-    public String getSubText2() {
+    public String getPhoneNum() {
         return phoneNum;
     }
 }

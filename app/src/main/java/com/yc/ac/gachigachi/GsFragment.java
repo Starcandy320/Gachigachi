@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +39,10 @@ public class GsFragment extends Fragment {
         gs_ListAdapter adapter1 = new gs_ListAdapter(getActivity(), goSchool);
 
         recyclerView.setAdapter(adapter1);
+
+        SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCall);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return rootView;
     }

@@ -44,7 +44,14 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
         board_Item item = items.get(position);
         holder.titleTextView.setText(item.getTitle());
         holder.subTextView1.setText(item.getSubText1());
-        holder.PhoneNum.setText(item.getSubText2());
+        holder.PhoneNum.setText(item.getPhoneNum());
+    }
+    public String getPhoneNumber(int position) {
+        if (position >= 0 && position < items.size()) {
+            return items.get(position).getPhoneNum();
+        } else {
+            return "";
+        }
     }
 
     @Override
