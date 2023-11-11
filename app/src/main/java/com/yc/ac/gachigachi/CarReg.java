@@ -1,8 +1,8 @@
 package com.yc.ac.gachigachi;
 
-import android.location.Address;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +33,9 @@ public class CarReg extends AppCompatActivity {
     MaterialButton submitButton;
     MaterialButton cancelButton;
 
+    // TAG String 상수 선언
+    private static final String TAG= "firestore";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,31 +54,55 @@ public class CarReg extends AppCompatActivity {
         // firestore 초기화
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // 입력한 데이터를 받아와서 가공
-        // 시간표에 미입력시 공강 처리
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", editTextName);
-        data.put("carNumber", editTextCarNumber);
-        data.put("Address", editTextAddress);
-        data.put("phoneNumber", editTextPhoneNumber);
-        data.put("isShow", true);
+        // cancel 버튼 클릭시 동작
+        cancelButton.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder(context)
+                    .setTitle(resources.getString(R.string.title))
+                    .setMessage(resources.getString(R.string.supporting_text))
+                    .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+                        // Respond to negative button press
 
-        // 자동 생성된 ID로 문서 생성
-        db.collection("car")
-                .add(data)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        Toast.makeText(CarReg.this, "성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                        Toast.makeText(CarReg.this, "저장에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                    .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                        // Respond to positive button press
+                        finish();
                     }
-                });
+                    .show()
+        });
+
+        // submit 버튼 클릭시 동작
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 입력한 데이터를 받아와서 가공
+                // 시간표에 미입력시 공강 처리
+                Map<String, Object> data = new HashMap<>();
+                data.put("name", editTextName);
+                data.put("carNumber", editTextCarNumber);
+                data.put("Address", editTextAddress);
+                data.put("phoneNumber", editTextPhoneNumber);
+                data.put("isShow", true);
+
+                // 자동 생성된 ID로 문서 생성
+                db.collection("car")
+                        .add(data)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                Toast.makeText(CarReg.this, "성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                                Toast.makeText(CarReg.this, "저장에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
+
     }
 }
