@@ -13,14 +13,6 @@ public class CarReg extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_reg);
-        Button Monday = findViewById(R.id.Monday);
 
-        Monday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PopUp.class);
-                startActivity(intent);
-            }
-        });
     }
 }
