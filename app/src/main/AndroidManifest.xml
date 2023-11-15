@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".PopUp"
+            android:exported="false" />
+        <activity
             android:name=".CarReg"
             android:exported="false" />
         <activity
