@@ -7,25 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:742200575177:android:189fd0a3aed76cd6bcf918",
-        "android_client_info": {
-          "package_name": "com.yc.ac.carpool"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCvjikwcUMlt_ThUlft2iEIum5q4syxw-Y"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:742200575177:android:a932202d56f28c14bcf918",
         "android_client_info": {
           "package_name": "com.yc.ac.gachigachi"

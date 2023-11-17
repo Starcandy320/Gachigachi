@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -20,55 +22,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class goToSchool extends AppCompatActivity {
+    private Button sendbt;
 
-    private EditText editTextName;
-    private EditText editTextCarNumber;
-    private EditText editTextAddress;
-    private EditText editPhoneNumber;
-    private Button buttonSubmit;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.go_to_school);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        sendbt = (Button) findViewById(R.id.button1);
 
-        editTextName = findViewById(R.id.editTextName);
-        editPhoneNumber = findViewById(R.id.editPhoneNumber);
-        editTextCarNumber = findViewById(R.id.editTextCarNumber);
-        editTextAddress = findViewById(R.id.editTextAddress);
-        buttonSubmit = findViewById(R.id.buttonSubmit);
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
+        sendbt.setOnClickListener(new Button.OnClickListener() {
+            int n = 0;
             public void onClick(View v) {
-                String name = editTextName.getText().toString();
-                String phoneNumber = editPhoneNumber.getText().toString();
-                String carNumber = editTextCarNumber.getText().toString();
-                String address = editTextAddress.getText().toString();
-
-                Map<String, Object> Car = new HashMap<>();
-                Car.put("name", name);
-                Car.put("phoneNumber", phoneNumber);
-                Car.put("carNumber", carNumber);
-                Car.put("address", address);
-
-                db.collection("CarList").document(carNumber.toString())
-                        .set(Car, SetOptions.merge())
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
-                            }
-                        });
+                // 버튼 누르면 수행 할 명령
+                databaseReference.child("CarList").child("user").push().setValue(n);
+                n++;
             }
-
         });
     }
 }
