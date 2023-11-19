@@ -1,64 +1,103 @@
 package com.yc.ac.gachigachi;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.carousel.CarouselLayoutManager;
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
+
 public class HomeFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new CarouselLayoutManager(new MultiBrowseCarouselStrategy()));
+        recyclerView.setAdapter(new RecyclerViewAdapter());
+
+        MaterialButton btnHome = rootView.findViewById(R.id.btnHome);
+        MaterialButton btnNotice = rootView.findViewById(R.id.btnNotice);
+        MaterialButton btnCalendar = rootView.findViewById(R.id.btnCalendar);
+        MaterialButton btnLibrary = rootView.findViewById(R.id.btnLibrary);
+
+        btnHome.setOnClickListener(v -> openChromeCustomTab("https://www.yc.ac.kr/yonam/web/main/mainPage.do"));
+
+        btnNotice.setOnClickListener(v -> openChromeCustomTab("https://www.yc.ac.kr/yonam/web/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_000000000590"));
+
+        btnCalendar.setOnClickListener(v -> openChromeCustomTab("https://www.yc.ac.kr/yonam/web/content.do?proFn=44100000"));
+
+        btnLibrary.setOnClickListener(v -> openChromeCustomTab("http://ycc4.yc.ac.kr/Cheetah/YONAM/Index/"));
+
+        return rootView;
+    }
+
+    private void openChromeCustomTab(String url) {
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(url));
+    }
+    public static class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolderClass> {
+
+        private final String[] textArray = new String[]{
+                "차량등록하러가기", "등교", "하교"
+        };
+
+        public static class ViewHolderClass extends RecyclerView.ViewHolder {
+            private final TextView carouselTextView;
+            private final TextView carouselTextView2;
+
+            public ViewHolderClass(View itemView) {
+                super(itemView);
+                carouselTextView = itemView.findViewById(R.id.carousel_text_view); // carousel_image_view 대신 carousel_text_view 사용
+                carouselTextView2 = itemView.findViewById(R.id.carousel_text_view2);
+                itemView.setOnClickListener(v -> {
+
+                    if (getAdapterPosition() == 0) {
+
+                        Intent intent = new Intent(v.getContext(), CarReg.class);
+                        v.getContext().startActivity(intent);
+                    }
+                });
+            }
+        }
+
+        @NonNull
+        @Override
+        public ViewHolderClass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View itemView = inflater.inflate(R.layout.item_carousel, parent, false);
+            return new ViewHolderClass(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolderClass holder, int position) {
+
+            holder.carouselTextView.setText(textArray[position]);
+            if (position == 0) {
+                holder.carouselTextView2.setText("차량이 있으시다면 등록하고\n카풀운전자가 되어보세요!");
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return textArray.length;
+        }
     }
 }
