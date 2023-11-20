@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class CarReg extends AppCompatActivity {
                     .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
                         // Respond to negative button press
 
-                    }
+                    };
                     .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
                         // Respond to positive button press
                         finish();
@@ -70,22 +71,25 @@ public class CarReg extends AppCompatActivity {
                     .show()
         });
 
+
+
         // submit 버튼 클릭시 동작
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 입력한 데이터를 받아와서 가공
-                // 시간표에 미입력시 공강 처리
-                Map<String, Object> data = new HashMap<>();
-                data.put("name", editTextName);
-                data.put("carNumber", editTextCarNumber);
-                data.put("Address", editTextAddress);
-                data.put("phoneNumber", editTextPhoneNumber);
-                data.put("isShow", true);
+                // 입력한 데이터를 받아와서 CarList 객체에 삽입
+                // 시간표에 미입력시 공강 처리 구현 필요
+                CarList carList = new CarList(
+                        editTextName.toString(),
+                        editTextCarNumber.toString(),
+                        editTextAddress.toString(),
+                        editTextPhoneNumber.toString(),
+                        true
+                );
 
                 // 자동 생성된 ID로 문서 생성
                 db.collection("car")
-                        .add(data)
+                        .add(carList)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
@@ -104,5 +108,7 @@ public class CarReg extends AppCompatActivity {
         });
 
 
+
     }
 }
+
