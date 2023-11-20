@@ -1,51 +1,50 @@
 package com.yc.ac.gachigachi;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class User {
-    private String profile;
-    private String name;
-    private String phoneNumber;
-    private String carNumber;
-    private String address;
+    public String name;
+    public String email;
+    public String age;
 
-    public User(){};
-
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
-    public String getName() {
-        return name;
+    public User() { }
+    public User(String name, String email, String age) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setAge(String age) {
+        this.age = age;
     }
 
-    public String getCarNumber() {
-        return carNumber;
+    public String getName() {
+        return name;
     }
 
-    public void setCarNumber(String carNumber) {
-        this.carNumber = carNumber;
+    public String getEmail() {
+        return email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAge() {
+        return age;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

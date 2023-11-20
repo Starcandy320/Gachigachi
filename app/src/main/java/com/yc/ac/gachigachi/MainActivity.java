@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,46 +31,76 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<User> arrayList;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
-
-
+    private DatabaseReference mDatabase;
+    Button save, read;
+    EditText email, name, age, id;
+    TextView data;
+    int i = 1; //pk
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        arrayList = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReference(); //DatabaseReference의 인스턴스
 
-        database = FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
-        databaseReference = database.getReference("User"); // DB데이터 연결
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                arrayList.clear(); //초기화
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-                    arrayList.add(user); //데이터들을 리스트에 추가
-                }
-                adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
-            }
+        save = findViewById(R.id.submit);
+        read = findViewById(R.id.read);
+        name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
+        age = findViewById(R.id.age);
+        id = findViewById(R.id.id);
+        data = findViewById(R.id.data);
 
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("MainActivity",String.valueOf(error.toException()));
+            public void onClick(View view) {
+                String getUserName = name.getText().toString();
+                String getUserEmail = email.getText().toString();
+                String getUserAge = age.getText().toString();
+
+                HashMap result = new HashMap<>();
+                result.put("name", getUserName); //키, 값
+                result.put("email", getUserEmail);
+                result.put("age", getUserAge);
+
+                writeUser(Integer.toString(i++), getUserName, getUserEmail, getUserAge);
             }
         });
-        adapter = new userAdapter(arrayList,this);
-        recyclerView.setAdapter(adapter);
+    }
+
+    private void writeUser(String userId, String name, String email, String age) {
+        User user = new User(name, email, age);
+
+        //데이터 저장
+        mDatabase.child("users").child(userId).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() { //데이터베이스에 넘어간 이후 처리
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(),"저장을 완료했습니다", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),"저장에 실패했습니다" , Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void readUser(String userId) {
+        //데이터 읽기
+        mDatabase.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                data.setText("이름: " + user.name + " 이메일: " + user.email + " 나이: " + user.age);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { //참조에 액세스 할 수 없을 때 호출
+                Toast.makeText(getApplicationContext(),"데이터를 가져오는데 실패했습니다" , Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
