@@ -4,6 +4,8 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,62 +15,60 @@ import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.security.PrivateKey;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText editTextName;
-    private EditText editTextCarNumber;
-    private EditText editTextAddress;
-    private EditText editPhoneNumber;
-    private Button buttonSubmit;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<User> arrayList;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        arrayList = new ArrayList<>();
 
-        editTextName = findViewById(R.id.editTextName);
-        editPhoneNumber = findViewById(R.id.editPhoneNumber);
-        editTextCarNumber = findViewById(R.id.editTextCarNumber);
-        editTextAddress = findViewById(R.id.editTextAddress);
-        buttonSubmit = findViewById(R.id.buttonSubmit);
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+        database = FirebaseDatabase.getInstance(); //파이어베이스 데이터베이스 연동
+        databaseReference = database.getReference("User"); // DB데이터 연결
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                String name = editTextName.getText().toString();
-                String phoneNumber = editPhoneNumber.getText().toString();
-                String carNumber = editTextCarNumber.getText().toString();
-                String address = editTextAddress.getText().toString();
-
-                Map<String, Object> Car = new HashMap<>();
-                Car.put("name", name);
-                Car.put("phoneNumber", phoneNumber);
-                Car.put("carNumber", carNumber);
-                Car.put("address", address);
-
-                db.collection("CarList").document(carNumber.toString())
-                        .set(Car, SetOptions.merge())
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
-                            }
-                        });
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arrayList.clear(); //초기화
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user = snapshot.getValue(User.class);
+                    arrayList.add(user); //데이터들을 리스트에 추가
+                }
+                adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("MainActivity",String.valueOf(error.toException()));
+            }
         });
+        adapter = new userAdapter(arrayList,this);
+        recyclerView.setAdapter(adapter);
     }
 }
