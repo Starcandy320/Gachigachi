@@ -15,15 +15,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.security.PrivateKey;
 import java.util.ArrayList;
@@ -31,76 +37,56 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private DatabaseReference mDatabase;
-    Button save, read;
-    EditText email, name, age, id;
-    TextView data;
-    int i = 1; //pk
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<User> arrayList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference(); //DatabaseReference의 인스턴스
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        arrayList = new ArrayList<>();
 
-        save = findViewById(R.id.submit);
-        read = findViewById(R.id.read);
-        name = findViewById(R.id.name);
-        email = findViewById(R.id.email);
-        age = findViewById(R.id.age);
-        id = findViewById(R.id.id);
-        data = findViewById(R.id.data);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String getUserName = name.getText().toString();
-                String getUserEmail = email.getText().toString();
-                String getUserAge = age.getText().toString();
-
-                HashMap result = new HashMap<>();
-                result.put("name", getUserName); //키, 값
-                result.put("email", getUserEmail);
-                result.put("age", getUserAge);
-
-                writeUser(Integer.toString(i++), getUserName, getUserEmail, getUserAge);
-            }
-        });
-    }
-
-    private void writeUser(String userId, String name, String email, String age) {
-        User user = new User(name, email, age);
-
-        //데이터 저장
-        mDatabase.child("users").child(userId).setValue(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() { //데이터베이스에 넘어간 이후 처리
+        // Firestore에서 데이터 읽어오기
+        db.collection("User")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"저장을 완료했습니다", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"저장에 실패했습니다" , Toast.LENGTH_LONG).show();
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 기존 데이터를 ArrayList에서 지우기
+                            arrayList.clear();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // User 클래스가 있다고 가정하고, "User.class"를 여러분의 실제 클래스로 교체해주세요
+                                User user = document.toObject(User.class);
+
+                                // ArrayList에 사용자 추가
+                                arrayList.add(user);
+                            }
+
+                            // 어댑터에게 데이터가 변경되었음을 알림
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            // 여기서 에러를 처리하세요
+                            Toast.makeText(MainActivity.this, "데이터 로딩 실패", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "데이터 로딩 실패", task.getException());
+                        }
                     }
                 });
-    }
 
-    private void readUser(String userId) {
-        //데이터 읽기
-        mDatabase.child("users").child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User user = snapshot.getValue(User.class);
-                data.setText("이름: " + user.name + " 이메일: " + user.email + " 나이: " + user.age);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { //참조에 액세스 할 수 없을 때 호출
-                Toast.makeText(getApplicationContext(),"데이터를 가져오는데 실패했습니다" , Toast.LENGTH_LONG).show();
-            }
-        });
+        adapter = new CustomAdapter(arrayList,this);
+        recyclerView.setAdapter(adapter); //리사이클러 뷰에 어뎁터 연결
     }
 }
