@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -82,18 +83,19 @@ public class CarReg extends AppCompatActivity {
 
         // cancelButton 클릭시 동작
         cancelButton.setOnClickListener(v -> {
-            MaterialAlertDialogBuilder(context)
-                    .setTitle(resources.getString(R.string.title))
-                    .setMessage(resources.getString(R.string.supporting_text))
-                    .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
-                        // Respond to negative button press
-
-                    };
-                    .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-                        // Respond to positive button press
-                        finish();
-                    }
-                    .show()
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder (CarReg.this);
+            builder.setTitle ("경고");
+            builder.setMessage ("취소 버튼을 누르면 뒤로 갑니다. 계속하시겠습니까?");
+            builder.setPositiveButton ("확인", (dialog, which) -> {
+                // 확인 버튼을 눌렀을 때의 로직
+                finish ();
+            });
+            builder.setNegativeButton ("취소", (dialog, which) -> {
+                // 취소 버튼을 눌렀을 때의 로직
+                dialog.dismiss ();
+            });
+            // 경고창을 생성하고 보여줍니다.
+            builder.create ().show ();
         });
 
 
