@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 
 public class SwipeCall extends ItemTouchHelper.Callback {
     private final Context context;
@@ -40,11 +42,26 @@ public class SwipeCall extends ItemTouchHelper.Callback {
         int position = viewHolder.getAdapterPosition();
         String phoneNumber = adapter.getPhoneNumber(position);
 
-        Uri number = Uri.parse("tel:" + phoneNumber);
-        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
-        context.startActivity(callIntent);
+        if (direction == ItemTouchHelper.LEFT) {
+            Uri number = Uri.parse("tel:" + phoneNumber);
+            Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+            context.startActivity(callIntent);
+        } else if (direction == ItemTouchHelper.RIGHT) {
+            showPopupMessage(phoneNumber);
+        }
 
         adapter.notifyItemChanged(position);
+    }
+
+    private void showPopupMessage(String phoneNumber) {
+        new MaterialAlertDialogBuilder(context)
+                .setTitle("신고 메시지")
+                .setMessage(phoneNumber + " 번호가 신고되었습니다.")
+                .setPositiveButton("확인", (dialog, which) -> {
+                    // 확인 버튼을 누르면 어떤 동작을 추가할 수 있습니다.
+                    dialog.dismiss();
+                })
+                .show();
     }
 
     @Override
