@@ -83,19 +83,12 @@ public class CarReg extends AppCompatActivity {
 
         // cancelButton 클릭시 동작
         cancelButton.setOnClickListener(v -> {
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder (CarReg.this);
-            builder.setTitle ("경고");
-            builder.setMessage ("취소 버튼을 누르면 뒤로 갑니다. 계속하시겠습니까?");
-            builder.setPositiveButton ("확인", (dialog, which) -> {
-                // 확인 버튼을 눌렀을 때의 로직
-                finish ();
-            });
-            builder.setNegativeButton ("취소", (dialog, which) -> {
-                // 취소 버튼을 눌렀을 때의 로직
-                dialog.dismiss ();
-            });
-            // 경고창을 생성하고 보여줍니다.
-            builder.create ().show ();
+            new MaterialAlertDialogBuilder(CarReg.this)
+                    .setTitle("경고")
+                    .setMessage("입력된 정보를 저장하지 않고 뒤로 갑니다.")
+                    .setNegativeButton("취소", (dialog, which) -> {dialog.dismiss(); })
+                    .setPositiveButton("확인", (dialog, which) -> { finish(); })
+                    .show();
         });
 
 
