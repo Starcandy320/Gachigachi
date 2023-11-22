@@ -19,6 +19,7 @@ public class CarReg extends AppCompatActivity {
     submit.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             Toast.makeText(CarReg.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
             finish();
         }
