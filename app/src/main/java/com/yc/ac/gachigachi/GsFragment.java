@@ -36,7 +36,7 @@ public class GsFragment extends Fragment {
         goSchool.add(new board_Item("등교 아이템 7", "차량번호 7", "010-0000-0000"));
         goSchool.add(new board_Item("등교 아이템 8", "차량번호 8", "010-0000-0000"));
 
-        gs_ListAdapter adapter1 = new gs_ListAdapter(getActivity(), goSchool);
+        gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
 
         recyclerView.setAdapter(adapter1);
 

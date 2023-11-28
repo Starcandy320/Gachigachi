@@ -1,6 +1,5 @@
 package com.yc.ac.gachigachi;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import java.util.List;
 public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHolder> {
     private final List<board_Item> items;
 
-    public gs_ListAdapter(Context context, List<board_Item> items) {
+    public gs_ListAdapter(List<board_Item> items) {
         this.items = items;
     }
 
