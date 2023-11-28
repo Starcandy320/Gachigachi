@@ -10,11 +10,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
-        <!-- 이름을 위한 TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/nameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -26,9 +27,8 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 차량 번호를 위한 TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -40,9 +40,8 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 주소를 위한 TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -54,9 +53,8 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 전화번호를 위한 TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -66,209 +64,214 @@
                 android:id="@+id/editTextPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:inputType="phone"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="등/하교 시간"
-            android:textSize="25dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-        <!-- 요일 및 시간을 위한 TextInputLayout -->
-        <!-- 월요일 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- 월요일 등교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="월요일 등교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/mondayGo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/mondayBack"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 월요일 하교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="월요일 하교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/mondayBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/tuesdayGo"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- 화요일 등교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="화요일 등교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tuesdayGo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/tuesdayBack"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 화요일 하교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="화요일 하교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tuesdayBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/wednesdayGo"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="수요일 등교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/wednesdayGo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/wednesdayBack"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 수요일 하교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="수요일 하교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/wednesdayBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/thursdayGo"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- 목요일 등교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="목요일 등교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/thursdayGo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/thursdayBack"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 목요일 하교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="목요일 하교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/thursdayBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/fridayGo"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- 금요일 등교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="금요일 등교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fridayGo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nextFocusDown="@id/fridayBack"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 금요일 하교 시간 -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="금요일 하교 시간">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fridayBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="time" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!-- 저장 버튼 -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/submitButton"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="저장" />
+            android:text="등교/하교시간"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 월요일 등교시간과 하교시간 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="월요일 등교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMondayArrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextMondayDeparture"
+                    android:inputType="time" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="월요일 하교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMondayDeparture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextTuesdayArrival"
+                    android:inputType="time" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="화요일 등교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextTuesdayArrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextTuesdayDeparture"
+                    android:inputType="time" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="화요일 하교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextTuesdayDeparture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextWednesdayArrival"
+                    android:inputType="time" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="수요일 등교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextWednesdayArrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextWednesdayDeparture"
+                    android:inputType="time" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="수요일 하교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextWednesdayDeparture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextThursdayArrival"
+                    android:inputType="time" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="목요일 등교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextThursdayArrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextThursdayDeparture"
+                    android:inputType="time" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="목요일 하교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextThursdayDeparture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextFridayArrival"
+                    android:inputType="time" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="금요일 등교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextFridayArrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/editTextFridayDeparture"
+                    android:inputType="time" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="금요일 하교시간">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextFridayDeparture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="time" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취소"
+                android:layout_toLeftOf="@id/submitButton"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="저장" />
+        </RelativeLayout>
+
     </LinearLayout>
 </ScrollView>
