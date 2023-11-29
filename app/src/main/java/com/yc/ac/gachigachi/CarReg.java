@@ -1,5 +1,6 @@
 package com.yc.ac.gachigachi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class CarReg extends AppCompatActivity {
     TextInputEditText editTextCarNumber;
     TextInputEditText editTextAddress;
     TextInputEditText editTextPhoneNumber;
+    TextInputEditText editTextStudentID;
 
     // 시간표 부분
     TextInputEditText editTextMondayArrival;
@@ -53,6 +55,7 @@ public class CarReg extends AppCompatActivity {
         editTextCarNumber = findViewById(R.id.editTextCarNumber);
         editTextAddress = findViewById(R.id.editTextAddress);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
+        editTextStudentID = findViewById(R.id.editTextStudentID);
 
         // 시간표 부분
         editTextMondayArrival = findViewById(R.id.editTextMondayArrival);
@@ -74,6 +77,9 @@ public class CarReg extends AppCompatActivity {
         // Firestore 초기화
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // back키 클릭시 동작
+
+
         // cancelButton 클릭시 동작
         cancelButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(CarReg.this)
                 .setTitle("경고")
@@ -86,11 +92,11 @@ public class CarReg extends AppCompatActivity {
         // submitButton 클릭시 동작
         submitButton.setOnClickListener(v -> {
             // 시간표 후처리
-            String mon = editTextMondayArrival.getText().toString() + editTextMondayDeparture.getText().toString();
-            String tue = editTextTuesdayArrival.getText().toString() + editTextTuesdayDeparture.getText().toString();
-            String wed = editTextWednesdayArrival.getText().toString() + editTextWednesdayDeparture.getText().toString();
-            String thu = editTextThursdayArrival.getText().toString() + editTextThursdayDeparture.getText().toString();
-            String fri = editTextFridayArrival.getText().toString() + editTextFridayDeparture.getText().toString();
+            String mon = editTextMondayArrival.getText().toString() + "," + editTextMondayDeparture.getText().toString();
+            String tue = editTextTuesdayArrival.getText().toString() + "," + editTextTuesdayDeparture.getText().toString();
+            String wed = editTextWednesdayArrival.getText().toString() + "," + editTextWednesdayDeparture.getText().toString();
+            String thu = editTextThursdayArrival.getText().toString() + "," + editTextThursdayDeparture.getText().toString();
+            String fri = editTextFridayArrival.getText().toString() + "," + editTextFridayDeparture.getText().toString();
 
             String[] tt = {mon, tue, wed, thu, fri};
             ArrayList<String> timetable = new ArrayList<>(Arrays.asList(tt));
@@ -100,7 +106,9 @@ public class CarReg extends AppCompatActivity {
             carList.put("name", editTextName.getText().toString());
             carList.put("carNumber", editTextCarNumber.getText().toString());
             carList.put("address", editTextAddress.getText().toString());
-            carList.put("phoneNumver", editTextAddress.getText().toString());
+            carList.put("phoneNumber", editTextPhoneNumber.getText().toString());
+            carList.put("isShow", true);
+            carList.put("studentID", editTextStudentID.getText().toString());
             carList.put("timetable", timetable);
 
             // 자동 생성된 ID로 문서 생성
@@ -109,6 +117,7 @@ public class CarReg extends AppCompatActivity {
                     .addOnSuccessListener(documentReference -> {
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                         Toast.makeText(CarReg.this, "성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
+                        finish();
                     })
                     .addOnFailureListener(e -> {
                         Log.w(TAG, "Error adding document", e);
