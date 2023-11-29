@@ -1,13 +1,21 @@
 package com.yc.ac.gachigachi;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,23 +34,35 @@ public class GsFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view_gs);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        List<board_Item> goSchool = new ArrayList<>();
-        goSchool.add(new board_Item("등교 아이템 1", "차량번호 1", "010-0000-0000"));
-        goSchool.add(new board_Item("등교 아이템 2", "차량번호 2", "010-0000-0000"));
-        goSchool.add(new board_Item("등교 아이템 3", "차량번호 3", "010-0000-0000"));
-        goSchool.add(new board_Item("등교 아이템 4", "차량번호 4", "010-0000-0000"));
-        goSchool.add(new board_Item("등교 아이템 5", "차량번호 5", "010-0000-0000"));
-        goSchool.add(new board_Item("등교 아이템 6", "차량번호 6", "010-0000-0000"));
-        goSchool.add(new board_Item("등교 아이템 7", "차량번호 7", "010-0000-0000"));
-        goSchool.add(new board_Item("등교 아이템 8", "차량번호 8", "010-0000-0000"));
+        // Firestore에서 특정 필드만 가져오기
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("carList")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<board_Item> goSchool = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
 
-        gs_ListAdapter adapter1 = new gs_ListAdapter(getActivity(), goSchool);
+                            String name = document.getString("name");
+                            String address = document.getString("address");
+                            String carNumber = document.getString("carNumber");
+                            String phoneNumber = document.getString("phoneNumber");
 
-        recyclerView.setAdapter(adapter1);
+                            board_Item item = new board_Item(name, carNumber, phoneNumber, address);
+                            goSchool.add(item);
+                        }
 
-        SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCall);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+                        gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
+                        recyclerView.setAdapter(adapter1);
+
+                        SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
+                        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCall);
+                        itemTouchHelper.attachToRecyclerView(recyclerView);
+                    } else {
+                        Toast.makeText(getContext(), "데이터 로딩 실패", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "데이터 로딩 실패", task.getException());
+                    }
+                });
 
         return rootView;
     }

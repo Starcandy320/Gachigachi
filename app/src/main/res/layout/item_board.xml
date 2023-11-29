@@ -13,19 +13,24 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/textViewTitle"
+            android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아이템 제목" />
+            android:text="이름" />
 
         <TextView
-            android:id="@+id/textViewSubtitle1"
+            android:id="@+id/textViewCarNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="서브 텍스트 1" />
+            android:text="차량번호" />
+        <TextView
+            android:id="@+id/textViewAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소" />
 
         <TextView
-            android:id="@+id/textViewPhoneNum"
+            android:id="@+id/textViewPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="010-0000-0000" />
