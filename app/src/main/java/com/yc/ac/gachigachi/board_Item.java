@@ -5,18 +5,12 @@ public class board_Item {
     private final String carNumber;
     private final String phoneNumber;
     private final String address;
-    private final  boolean isShow;
 
-    public board_Item(String name, String carNumber, String phoneNumber, String address, boolean isShow) {
+    public board_Item(String name, String carNumber, String phoneNumber, String address) {
         this.name = name;
         this.carNumber = carNumber;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.isShow = isShow;
-    }
-
-    public boolean isShow() {
-        return isShow;
     }
 
     public String getAddress() {
