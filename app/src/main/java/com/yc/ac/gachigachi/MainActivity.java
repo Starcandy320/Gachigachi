@@ -36,29 +36,10 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_PERMISSION_REQUEST_CODE);
-            } else {
-                // 이미 권한이 부여되었을 경우 처리할 내용
-                // 예: 위치 정보 가져오기
             }
-        } else {
-            // 안드로이드 버전이 마시멜로우 미만인 경우
-            // 권한이 자동으로 부여되었으므로 처리할 내용 추가
-        }
     }
 
-    // 사용자가 권한 요청에 응답할 때 호출되는 메서드
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 부여되었을 경우 처리할 내용
-                // 예: 위치 정보 가져오기
-            } else {
-                // 권한이 거부되었을 경우 사용자에게 알림 또는 다른 처리 수행
-            }
-        }
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
