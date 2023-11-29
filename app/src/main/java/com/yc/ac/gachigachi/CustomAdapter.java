@@ -38,7 +38,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 //                .load(arrayList.get(position).getProfile())
 //                .into(holder.iv_profile);
         holder.tv_name.setText(arrayList.get(position).getName());
-        holder.tv_carNumber.setText(arrayList.get(position).getCarNumber());
+        holder.tv_carNumber.setText(arrayList.get(position).getPhoneNumber());
         holder.tv_address.setText(arrayList.get(position).getAddress());
         holder.tv_phoneNumber.setText(arrayList.get(position).getPhoneNumber());
     }

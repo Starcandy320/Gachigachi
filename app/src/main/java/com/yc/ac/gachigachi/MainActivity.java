@@ -19,7 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -53,8 +55,20 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        CollectionReference user = db.collection("User");
+
+        /* 파이어베이스에 데이터 삽입하는 코드
+        Map<String, Object> data1 = new HashMap<>();
+        data1.put("name", "이름");
+        data1.put("address", "주소");
+        data1.put("carNumber", "차량번호");
+        data1.put("phoneNumber", "전화번호");
+        user.document("User").set(data1);
+        */
+
         // Firestore에서 데이터 읽어오기
         db.collection("User")
+                .whereEqualTo("carNumber", "52오2998")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
