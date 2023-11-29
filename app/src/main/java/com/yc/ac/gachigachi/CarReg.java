@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
@@ -78,7 +79,6 @@ public class CarReg extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // back키 클릭시 동작
-
 
         // cancelButton 클릭시 동작
         cancelButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(CarReg.this)

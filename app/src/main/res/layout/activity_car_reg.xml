@@ -37,7 +37,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextCarNumber"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLength="8"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -64,6 +65,7 @@
                 android:id="@+id/editTextPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="11"
                 android:inputType="phone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,13 +79,14 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextStudentID"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:maxLength="8"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="등교/하교시간"
+            android:text="등하교 시간"
             android:textSize="20sp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
