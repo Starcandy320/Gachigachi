@@ -1,25 +1,37 @@
 package com.yc.ac.gachigachi;
 
 public class board_Item {
-    private final String title;
-    private final String subText1;
-    private final String phoneNum;
+    private final String name;
+    private final String carNumber;
+    private final String phoneNumber;
+    private final String address;
+    private final  boolean isShow;
 
-    public board_Item(String title, String subText1, String phoneNum) {
-        this.title = title;
-        this.subText1 = subText1;
-        this.phoneNum = phoneNum;
+    public board_Item(String name, String carNumber, String phoneNumber, String address, boolean isShow) {
+        this.name = name;
+        this.carNumber = carNumber;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.isShow = isShow;
     }
 
-    public String getTitle() {
-        return title;
+    public boolean isShow() {
+        return isShow;
     }
 
-    public String getSubText1() {
-        return subText1;
+    public String getAddress() {
+        return address;
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getCarNumber() {
+        return carNumber;
+    }
+
+    public String getName() {
+        return name;
     }
 }
