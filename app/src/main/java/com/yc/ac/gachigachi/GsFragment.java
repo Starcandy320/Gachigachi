@@ -17,8 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class GsFragment extends Fragment {
 
@@ -47,9 +51,32 @@ public class GsFragment extends Fragment {
                             String address = document.getString("address");
                             String carNumber = document.getString("carNumber");
                             String phoneNumber = document.getString("phoneNumber");
+                            ArrayList<String> timetable = (ArrayList<String>) document.get("timetable");
 
-                            board_Item item = new board_Item(name, carNumber, phoneNumber, address);
-                            goSchool.add(item);
+                            Calendar calendar = Calendar.getInstance();
+                            Date date = calendar.getTime();
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE", Locale.getDefault());
+                            String currentDay = simpleDateFormat.format(date);
+                            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                            int currentIndex = -1;
+
+                            for (int i = 0; i < timetable.size(); i++) {
+                                if (timetable.get(i).startsWith(currentDay)) {
+                                    currentIndex = i;
+                                    break;
+                                }
+                            }
+
+                            if (currentIndex != -1) {
+                                List<Integer> timings = parseTimings(timetable.get(currentIndex));
+                                for (int timing : timings) {
+                                    if (timing > hour) {
+                                        board_Item item = new board_Item(name, carNumber, phoneNumber, address);
+                                        goSchool.add(item);
+                                        break;
+                                    }
+                                }
+                            }
                         }
 
                         gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
@@ -65,5 +92,14 @@ public class GsFragment extends Fragment {
                 });
 
         return rootView;
+    }
+
+    private List<Integer> parseTimings(String timings) {
+        String[] timingArray = timings.split(",");
+        List<Integer> timingList = new ArrayList<>();
+        for (String timing : timingArray) {
+            timingList.add(Integer.parseInt(timing));
+        }
+        return timingList;
     }
 }

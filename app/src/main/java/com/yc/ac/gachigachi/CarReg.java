@@ -90,42 +90,64 @@ public class CarReg extends AppCompatActivity {
 
 
         // submitButton 클릭시 동작
+        // submitButton 클릭시 동작
         submitButton.setOnClickListener(v -> {
-            // 시간표 후처리
-            String mon = editTextMondayArrival.getText().toString() + "," + editTextMondayDeparture.getText().toString();
-            String tue = editTextTuesdayArrival.getText().toString() + "," + editTextTuesdayDeparture.getText().toString();
-            String wed = editTextWednesdayArrival.getText().toString() + "," + editTextWednesdayDeparture.getText().toString();
-            String thu = editTextThursdayArrival.getText().toString() + "," + editTextThursdayDeparture.getText().toString();
-            String fri = editTextFridayArrival.getText().toString() + "," + editTextFridayDeparture.getText().toString();
+            // 입력값 확인
+            if (validateInputs()) {
+                // 시간표 후처리
+                String mon = editTextMondayArrival.getText().toString() + "," + editTextMondayDeparture.getText().toString();
+                String tue = editTextTuesdayArrival.getText().toString() + "," + editTextTuesdayDeparture.getText().toString();
+                String wed = editTextWednesdayArrival.getText().toString() + "," + editTextWednesdayDeparture.getText().toString();
+                String thu = editTextThursdayArrival.getText().toString() + "," + editTextThursdayDeparture.getText().toString();
+                String fri = editTextFridayArrival.getText().toString() + "," + editTextFridayDeparture.getText().toString();
 
-            String[] tt = {mon, tue, wed, thu, fri};
-            ArrayList<String> timetable = new ArrayList<>(Arrays.asList(tt));
+                String[] tt = {mon, tue, wed, thu, fri};
+                ArrayList<String> timetable = new ArrayList<>(Arrays.asList(tt));
 
-            // 입력한 데이터를 받아와서 CarList 객체에 삽입
-            Map<String, Object> carList = new HashMap<>();
-            carList.put("name", editTextName.getText().toString());
-            carList.put("carNumber", editTextCarNumber.getText().toString());
-            carList.put("address", editTextAddress.getText().toString());
-            carList.put("phoneNumber", editTextPhoneNumber.getText().toString());
-            carList.put("isShow", true);
-            carList.put("studentID", editTextStudentID.getText().toString());
-            carList.put("timetable", timetable);
+                // 입력한 데이터를 받아와서 CarList 객체에 삽입
+                Map<String, Object> carList = new HashMap<>();
+                carList.put("name", editTextName.getText().toString());
+                carList.put("carNumber", editTextCarNumber.getText().toString());
+                carList.put("address", editTextAddress.getText().toString());
+                carList.put("phoneNumber", editTextPhoneNumber.getText().toString());
+                carList.put("isShow", true);
+                carList.put("studentID", editTextStudentID.getText().toString());
+                carList.put("timetable", timetable);
 
-            // 자동 생성된 ID로 문서 생성
-            db.collection("carList")
-                    .add(carList)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        Toast.makeText(CarReg.this, "성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w(TAG, "Error adding document", e);
-                        Toast.makeText(CarReg.this, "저장에 실패하였습니다", Toast.LENGTH_SHORT).show();
-                    });
+                // 자동 생성된 ID로 문서 생성
+                db.collection("carList")
+                        .add(carList)
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                            Toast.makeText(CarReg.this, "성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w(TAG, "Error adding document", e);
+                            Toast.makeText(CarReg.this, "저장에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                        });
+            }
         });
-
-
+    }
+    private boolean validateInputs() {
+        if (editTextName.getText().toString().isEmpty() ||
+                editTextCarNumber.getText().toString().isEmpty() ||
+                editTextAddress.getText().toString().isEmpty() ||
+                editTextPhoneNumber.getText().toString().isEmpty() ||
+                editTextStudentID.getText().toString().isEmpty() ||
+                editTextMondayArrival.getText().toString().isEmpty() ||
+                editTextTuesdayArrival.getText().toString().isEmpty() ||
+                editTextWednesdayArrival.getText().toString().isEmpty() ||
+                editTextThursdayArrival.getText().toString().isEmpty() ||
+                editTextFridayArrival.getText().toString().isEmpty() ||
+                editTextMondayDeparture.getText().toString().isEmpty() ||
+                editTextTuesdayDeparture.getText().toString().isEmpty() ||
+                editTextWednesdayDeparture.getText().toString().isEmpty() ||
+                editTextThursdayDeparture.getText().toString().isEmpty() ||
+                editTextFridayDeparture.getText().toString().isEmpty()) {
+            Toast.makeText(this, "입력값을 모두 입력해주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }
-
