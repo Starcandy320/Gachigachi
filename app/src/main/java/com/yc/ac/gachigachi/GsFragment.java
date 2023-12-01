@@ -26,6 +26,8 @@ import java.util.Locale;
 
 public class GsFragment extends Fragment {
 
+    private static final String TAG = "firestore";
+
     public GsFragment() {
         // Required empty public constructor
     }
@@ -43,51 +45,75 @@ public class GsFragment extends Fragment {
         db.collection("carList")
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        List<board_Item> goSchool = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                    if (isAdded()) {  // Check if the fragment is attached to the activity
+                        if (task.isSuccessful()) {
+                            List<board_Item> goSchool = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
 
-                            String name = document.getString("name");
-                            String address = document.getString("address");
-                            String carNumber = document.getString("carNumber");
-                            String phoneNumber = document.getString("phoneNumber");
-                            ArrayList<String> timetable = (ArrayList<String>) document.get("timetable");
+                                String name = document.getString("name");
+                                String address = document.getString("address");
+                                String carNumber = document.getString("carNumber");
+                                String phoneNumber = document.getString("phoneNumber");
+                                ArrayList<String> timetable = (ArrayList<String>) document.get("timetable");
 
-                            Calendar calendar = Calendar.getInstance();
-                            Date date = calendar.getTime();
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE", Locale.getDefault());
-                            String currentDay = simpleDateFormat.format(date);
-                            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                            int currentIndex = -1;
+                                Calendar calendar = Calendar.getInstance();
+                                Date date = calendar.getTime();
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE", Locale.getDefault());
+                                String currentDay = simpleDateFormat.format(date);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int currentIndex = -1;
 
-                            for (int i = 0; i < timetable.size(); i++) {
-                                if (timetable.get(i).startsWith(currentDay)) {
-                                    currentIndex = i;
-                                    break;
+                                int dayIndex;
+                                switch (currentDay) {
+                                    case "Mon":
+                                        dayIndex = 0;
+                                        break;
+                                    case "Tue":
+                                        dayIndex = 1;
+                                        break;
+                                    case "Wed":
+                                        dayIndex = 2;
+                                        break;
+                                    case "Thu":
+                                        dayIndex = 3;
+                                        break;
+                                    case "Fri":
+                                        dayIndex = 4;
+                                        break;
+                                    default:
+                                        dayIndex = -1;
+                                        break;
                                 }
-                            }
 
-                            if (currentIndex != -1) {
-                                List<Integer> timings = parseTimings(timetable.get(currentIndex));
-                                for (int timing : timings) {
-                                    if (timing > hour) {
-                                        board_Item item = new board_Item(name, carNumber, phoneNumber, address);
-                                        goSchool.add(item);
+                                for (int i = 0; i < 5; i++) {
+                                    if (i==dayIndex) {
+                                        currentIndex = i;
                                         break;
                                     }
                                 }
+
+                                if (currentIndex != -1) {
+                                    List<Integer> timings = parseTimings(timetable.get(currentIndex));
+                                    for (int timing : timings) {
+                                        if (timing > hour) {
+                                            board_Item item = new board_Item(name, carNumber, phoneNumber, address);
+                                            goSchool.add(item);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
+
+                            gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
+                            recyclerView.setAdapter(adapter1);
+
+                            SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
+                            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCall);
+                            itemTouchHelper.attachToRecyclerView(recyclerView);
+                        } else {
+                            Toast.makeText(getContext(), "데이터 로딩 실패", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "데이터 로딩 실패", task.getException());
                         }
-
-                        gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
-                        recyclerView.setAdapter(adapter1);
-
-                        SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
-                        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCall);
-                        itemTouchHelper.attachToRecyclerView(recyclerView);
-                    } else {
-                        Toast.makeText(getContext(), "데이터 로딩 실패", Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "데이터 로딩 실패", task.getException());
                     }
                 });
 

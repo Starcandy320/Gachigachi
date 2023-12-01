@@ -129,6 +129,7 @@ public class CarReg extends AppCompatActivity {
             }
         });
     }
+
     private boolean validateInputs() {
         if (editTextName.getText().toString().isEmpty() ||
                 editTextCarNumber.getText().toString().isEmpty() ||
@@ -148,6 +149,19 @@ public class CarReg extends AppCompatActivity {
             Toast.makeText(this, "입력값을 모두 입력해주세요", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (!isValidTime(editTextMondayArrival) || !isValidTime(editTextTuesdayArrival) ||
+                !isValidTime(editTextWednesdayArrival) || !isValidTime(editTextThursdayArrival) ||
+                !isValidTime(editTextFridayArrival) || !isValidTime(editTextMondayDeparture) ||
+                !isValidTime(editTextTuesdayDeparture) || !isValidTime(editTextWednesdayDeparture) ||
+                !isValidTime(editTextThursdayDeparture) || !isValidTime(editTextFridayDeparture)) {
+            Toast.makeText(this, "시간 값은 0부터 24 사이어야 합니다", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
+    }
+
+    private boolean isValidTime(TextInputEditText editText) {
+        int timeValue = Integer.parseInt(editText.getText().toString());
+        return timeValue >= 0 && timeValue <= 24;
     }
 }

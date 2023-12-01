@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="주소">
+            android:hint="주소  ex)가좌동, 호탄동">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextAddress"
@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="등교/하교시간"
+            android:text="등교/하교시간(0~24)"
             android:textSize="20sp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />
