@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHolder> {
@@ -22,7 +23,8 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
         public TextView carNumber;
         public TextView phoneNumber;
         public TextView address;
-
+        public TextView day;
+        public TextView time;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -30,6 +32,8 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
             carNumber = itemView.findViewById(R.id.textViewCarNumber);
             phoneNumber = itemView.findViewById(R.id.textViewPhoneNumber);
             address = itemView.findViewById(R.id.textViewAddress);
+            day = itemView.findViewById(R.id.textViewDay);
+            time = itemView.findViewById(R.id.textViewTime);
         }
     }
 
@@ -40,14 +44,50 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         board_Item item = items.get(position);
-        holder.name.setText(item.getName());
-        holder.carNumber.setText(item.getCarNumber());
-        holder.phoneNumber.setText(item.getPhoneNumber());
-        holder.address.setText(item.getAddress());
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        dayOfWeek = (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) ? (dayOfWeek + 1) % 7 : dayOfWeek;
+        String dayString = getDayString(dayOfWeek);
+
+        if (item.getTimetable() != null && item.getTimetable().size() > dayOfWeek) {
+            String timeDay = item.getTimetable().get(dayOfWeek - 1);
+            if (!timeDay.equals(",")) {
+                timeDay = firstNumber(timeDay);
+                timeDay = timeDay + "시";
+                holder.name.setText(item.getName());
+                holder.carNumber.setText(item.getCarNumber());
+                holder.phoneNumber.setText(item.getPhoneNumber());
+                holder.address.setText(item.getAddress());
+                holder.day.setText(dayString);
+                holder.time.setText(timeDay);
+            } else {
+                holder.itemView.post(() -> {
+                    int adapterPosition = holder.getAdapterPosition();
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        items.remove(adapterPosition);
+                        notifyItemRemoved(adapterPosition);
+                    }
+                });
+            }
+        }
+    }
+
+
+    private String firstNumber(String input) {
+        String[] parts = input.split(",");
+        if (parts.length > 0) {
+            return parts[0];
+        } else {
+            return "";
+        }
+    }
+
+    private String getDayString(int dayOfWeek) {
+        String[] daysOfWeek = {"월요일", "화요일", "수요일", "목요일", "금요일"};
+        return daysOfWeek[dayOfWeek - 1];
     }
     public String getPhoneNumber(int position) {
         if (position >= 0 && position < items.size()) {

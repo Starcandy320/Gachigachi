@@ -55,9 +55,7 @@ public class HomeFragment extends Fragment {
     }
     public static class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolderClass> {
 
-        private final String[] textArray = new String[]{
-                "차량등록하러가기", "등교", "하교"
-        };
+        private final String[] textArray = new String[]{ "차량등록하러가기", "등교", "하교" };
 
         public static class ViewHolderClass extends RecyclerView.ViewHolder {
             private final TextView carouselTextView;
@@ -65,7 +63,7 @@ public class HomeFragment extends Fragment {
 
             public ViewHolderClass(View itemView) {
                 super(itemView);
-                carouselTextView = itemView.findViewById(R.id.carousel_text_view); // carousel_image_view 대신 carousel_text_view 사용
+                carouselTextView = itemView.findViewById(R.id.carousel_text_view);
                 carouselTextView2 = itemView.findViewById(R.id.carousel_text_view2);
                 itemView.setOnClickListener(v -> {
 
