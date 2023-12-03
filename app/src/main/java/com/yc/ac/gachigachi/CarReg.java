@@ -1,6 +1,8 @@
 package com.yc.ac.gachigachi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,6 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CarReg extends AppCompatActivity {
+    // 로컬 데이터 부분
+    SharedPreferences StudentId;
+    SharedPreferences.Editor editor;
 
     // 일반 정보 부분
     TextInputEditText editTextName;
@@ -49,7 +54,9 @@ public class CarReg extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_reg);
-
+        // 로컬 저장 부분
+        StudentId = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        editor = StudentId.edit();
         // 일반 정보 부분
         editTextName = findViewById(R.id.editTextName);
         editTextCarNumber = findViewById(R.id.editTextCarNumber);
@@ -110,7 +117,10 @@ public class CarReg extends AppCompatActivity {
             carList.put("isShow", true);
             carList.put("studentID", editTextStudentID.getText().toString());
             carList.put("timetable", timetable);
-
+            //로컬 데이터 저장
+            String StuId = editTextStudentID.getText().toString();
+            editor.putString("userInputKey", StuId);
+            editor.apply();
             // 자동 생성된 ID로 문서 생성
             db.collection("carList")
                     .add(carList)
