@@ -10,14 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.function.Function;
 
-public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHolder> {
+public class listAdapter extends RecyclerView.Adapter<listAdapter.ViewHolder> {
     private final List<board_Item> items;
+    private final Function<String, String> numberMethod;
 
-    public gs_ListAdapter(List<board_Item> items) {
+    public listAdapter(List<board_Item> items, Function<String, String> numberMethod) {
         this.items = items;
+        this.numberMethod = numberMethod;
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public TextView carNumber;
@@ -57,7 +59,7 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
         if (item.getTimetable() != null && item.getTimetable().size() > (dayOfWeek-2)) {
             String timeDay = item.getTimetable().get(dayOfWeek - 2);
             if (!timeDay.equals(",")) {
-                timeDay = firstNumber(timeDay);
+                timeDay = numberMethod.apply(timeDay);
                 timeDay = timeDay + "시";
                 holder.name.setText(item.getName());
                 holder.carNumber.setText(item.getCarNumber());
@@ -74,16 +76,6 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
                     }
                 });
             }
-        }
-    }
-
-
-    private String firstNumber(String input) {
-        String[] parts = input.split(",");
-        if (parts.length > 0) {
-            return parts[0];
-        } else {
-            return "";
         }
     }
 

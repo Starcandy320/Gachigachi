@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class GhFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_gh, container, false);
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view_gs);
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view_gh);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -62,10 +61,10 @@ public class GhFragment extends Fragment {
                             goSchool.add(item);
                         }
 
-                        gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
-                        recyclerView.setAdapter(adapter1);
+                        listAdapter adapter2 = new listAdapter(goSchool, this::lastNumber);
+                        recyclerView.setAdapter(adapter2);
 
-                        SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
+                        SwipeCall swipeCall = new SwipeCall(requireContext(), adapter2);
                         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCall);
                         itemTouchHelper.attachToRecyclerView(recyclerView);
                     } else {
@@ -75,5 +74,14 @@ public class GhFragment extends Fragment {
                 });
 
         return rootView;
+    }
+
+    private String lastNumber(String input) {
+        String[] parts = input.split(",");
+        if (parts.length > 0) {
+            return parts[parts.length - 1];
+        } else {
+            return "";
+        }
     }
 }

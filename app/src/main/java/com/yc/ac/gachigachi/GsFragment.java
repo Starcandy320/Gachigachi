@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class GsFragment extends Fragment {
                             goSchool.add(item);
                         }
 
-                        gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
+                        listAdapter adapter1 = new listAdapter(goSchool, this::firstNumber);
                         recyclerView.setAdapter(adapter1);
 
                         SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
@@ -75,5 +74,14 @@ public class GsFragment extends Fragment {
                 });
 
         return rootView;
+    }
+
+    private String firstNumber(String input) {
+        String[] parts = input.split(",");
+        if (parts.length > 0) {
+            return parts[0];
+        } else {
+            return "";
+        }
     }
 }
