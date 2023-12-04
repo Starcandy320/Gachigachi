@@ -49,11 +49,13 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
         board_Item item = items.get(position);
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        dayOfWeek = (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) ? (dayOfWeek + 1) % 7 : dayOfWeek;
+        if(dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY){
+            dayOfWeek = 2;
+        }
         String dayString = getDayString(dayOfWeek);
 
-        if (item.getTimetable() != null && item.getTimetable().size() > dayOfWeek) {
-            String timeDay = item.getTimetable().get(dayOfWeek - 1);
+        if (item.getTimetable() != null && item.getTimetable().size() > (dayOfWeek-2)) {
+            String timeDay = item.getTimetable().get(dayOfWeek - 2);
             if (!timeDay.equals(",")) {
                 timeDay = firstNumber(timeDay);
                 timeDay = timeDay + "시";
@@ -86,8 +88,8 @@ public class gs_ListAdapter extends RecyclerView.Adapter<gs_ListAdapter.ViewHold
     }
 
     private String getDayString(int dayOfWeek) {
-        String[] daysOfWeek = {"월요일", "화요일", "수요일", "목요일", "금요일"};
-        return daysOfWeek[dayOfWeek - 1];
+        String[] week = {"월요일", "화요일", "수요일", "목요일", "금요일"};
+        return week[dayOfWeek - 2];
     }
     public String getPhoneNumber(int position) {
         if (position >= 0 && position < items.size()) {
