@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="주소">
+            android:hint="주소 ex)xx동">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextAddress"
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="전화번호">
+            android:hint="전화번호 (-없이 입력)">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextPhoneNumber"
@@ -88,8 +88,12 @@
             android:layout_height="wrap_content"
             android:text="등하교 시간"
             android:textSize="20sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ex)오전 9시 -> 09, 오후 1시 -> 13"
+            android:layout_marginBottom="8dp"/>
 
         <!-- 월요일 등교시간과 하교시간 -->
         <LinearLayout
@@ -109,6 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextMondayDeparture"
+                    android:maxLength="2"
                     android:inputType="time" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,6 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextTuesdayArrival"
+                    android:maxLength="2"
                     android:inputType="time" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -144,6 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextTuesdayDeparture"
+                    android:maxLength="2"
                     android:inputType="time" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -159,6 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextWednesdayArrival"
+                    android:maxLength="2"
                     android:inputType="time" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -179,6 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextWednesdayDeparture"
+                    android:maxLength="2"
                     android:inputType="time" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -194,6 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextThursdayArrival"
+                    android:maxLength="2"
                     android:inputType="time" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -216,6 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextThursdayDeparture"
+                    android:maxLength="2"
                     android:inputType="time" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,6 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextFridayArrival"
+                    android:maxLength="2"
                     android:inputType="time" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -252,6 +264,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nextFocusDown="@id/editTextFridayDeparture"
+                    android:maxLength="2"
                     android:inputType="time" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -267,6 +280,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
+                    android:maxLength="2"
                     android:inputType="time" />
 
             </com.google.android.material.textfield.TextInputLayout>
