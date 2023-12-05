@@ -13,23 +13,22 @@
         android:layout_marginBottom="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/smallTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?attr/colorPrimary"
         android:text="같이의 가치"
         android:layout_marginTop="20dp"
         android:layout_alignStart="@id/textView"
-        android:layout_alignEnd="@id/textView"
-        android:textColor="@color/md_theme_light_primary" />
+        android:layout_alignEnd="@id/textView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerView_home"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:layout_below="@id/textView" />
@@ -37,10 +36,11 @@
 
 
     <LinearLayout
+        android:id="@+id/liear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_below="@id/recyclerView"
+        android:layout_below="@id/recyclerView_home"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp">
 
@@ -84,4 +84,67 @@
             app:cornerRadius="28dp"
             app:iconGravity="textTop" />
     </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnWrite"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/liear"
+        android:textSize="18sp"
+        app:icon="@drawable/more"
+        app:iconGravity="end"
+        app:cornerRadius="28dp"
+        android:text="카풀 이용시 주의사항"/>
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/Widget.MaterialComponents.TextView"
+        android:id="@+id/additionalTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnWrite"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:visibility="gone"
+        android:text="@string/carpool1"/>
+
+    <LinearLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_below="@+id/additionalTextView">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOption1"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            app:cornerRadius="28dp"
+            app:iconGravity="textTop"
+            android:textSize="11sp"
+            android:text="1"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOption2"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            app:cornerRadius="28dp"
+            app:iconGravity="textTop"
+            android:textSize="11sp"
+            android:text="2"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOption3"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            app:cornerRadius="28dp"
+            app:iconGravity="textTop"
+            android:textSize="11sp"
+            android:text="3"/>
+    </LinearLayout>
+
+
 </RelativeLayout>

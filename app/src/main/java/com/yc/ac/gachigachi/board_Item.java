@@ -1,16 +1,24 @@
 package com.yc.ac.gachigachi;
 
+import java.util.List;
+
 public class board_Item {
     private final String name;
     private final String carNumber;
     private final String phoneNumber;
     private final String address;
+    private final List<String> timetable;
 
-    public board_Item(String name, String carNumber, String phoneNumber, String address) {
+    public board_Item(String name, String carNumber, String phoneNumber, String address, List<String> timetable) {
         this.name = name;
         this.carNumber = carNumber;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.timetable = timetable;
+    }
+
+    public List<String> getTimetable() {
+        return timetable;
     }
 
     public String getAddress() {
@@ -28,4 +36,5 @@ public class board_Item {
     public String getName() {
         return name;
     }
+
 }
