@@ -86,7 +86,7 @@ public class CarReg extends AppCompatActivity {
                 // Handle the back button event
                 if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
                     backKeyPressedTime = System.currentTimeMillis();
-                    Toast.makeText(carReg.this, "뒤로 가기 버튼을 두번 누르시면 저장하지 않고 뒤로 갑니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CarReg.this, "뒤로 가기 버튼을 두번 누르시면 저장하지 않고 뒤로 갑니다.", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (System.currentTimeMillis() <= backKeyPressedTime + 2500) {
