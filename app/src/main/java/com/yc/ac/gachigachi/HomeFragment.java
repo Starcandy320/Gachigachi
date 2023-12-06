@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -111,6 +112,7 @@ public class HomeFragment extends Fragment {
             private final TextView carouselName;
             private final TextView carouselPhoneNum;
             private final TextView carouselTime;
+            private final CardView cardView;
 
             public ViewHolderClass(View itemView) {
                 super(itemView);
@@ -120,6 +122,7 @@ public class HomeFragment extends Fragment {
                 carouselTime = itemView.findViewById(R.id.carousel_time);
                 carouselPhoneNum = itemView.findViewById(R.id.carousel_phoneNum);
                 carouselImageView = itemView.findViewById(R.id.carousel_image_view);
+                cardView = itemView.findViewById(R.id.carousel_cardview);
 
                 itemView.setOnClickListener(v -> {
                     if (getAdapterPosition() == 0) {
@@ -168,11 +171,13 @@ public class HomeFragment extends Fragment {
             if (position == 1) {
                 holder.carouselImageView.setImageResource(R.drawable.assignment);
                 holder.carouselTime.setText(getDay());
+                holder.cardView.setVisibility(View.VISIBLE);
                 loadRandomFirebaseData(holder);
             }
             if (position == 2){
                 holder.carouselImageView.setImageResource(R.drawable.assignment);
                 holder.carouselTime.setText(getDay());
+                holder.cardView.setVisibility(View.VISIBLE);
                 loadRandomFirebaseData(holder);
             }
         }
