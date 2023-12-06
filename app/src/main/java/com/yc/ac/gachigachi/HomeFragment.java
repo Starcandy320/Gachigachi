@@ -2,7 +2,6 @@ package com.yc.ac.gachigachi;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,12 +22,8 @@ import androidx.appcompat.widget.TooltipCompat;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
@@ -185,24 +180,7 @@ public class HomeFragment extends Fragment {
                         Intent intent = new Intent(v.getContext(), CarReg.class);
                         v.getContext().startActivity(intent);
                     }
-                    else if (getAdapterPosition() == 1) {
-                        FragmentManager fragmentManager = ((FragmentActivity) v.getContext()).getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, new GsFragment());
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        BottomNavigationView bottomNavigationView = ((Activity) v.getContext()).findViewById(R.id.bottom_navigation);
-                        bottomNavigationView.setSelectedItemId(R.id.menu_gs_fragment);
-                    }
-                    else if (getAdapterPosition() == 2) {
-                        FragmentManager fragmentManager = ((FragmentActivity) v.getContext()).getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, new GhFragment());
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        BottomNavigationView bottomNavigationView = ((Activity) v.getContext()).findViewById(R.id.bottom_navigation);
-                        bottomNavigationView.setSelectedItemId(R.id.menu_gh_fragment);
-                    }
+
                 });
             }
         }
