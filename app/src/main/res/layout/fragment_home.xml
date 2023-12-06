@@ -150,7 +150,13 @@
                 android:textSize="12sp"
                 android:text="3"/>
         </LinearLayout>
-
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="345dp"
+             />
 
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

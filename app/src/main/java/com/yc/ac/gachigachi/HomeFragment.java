@@ -3,7 +3,9 @@ package com.yc.ac.gachigachi;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,6 +65,7 @@ public class HomeFragment extends Fragment {
         MaterialButton btnOption1 = rootView.findViewById(R.id.btnOption1);
         MaterialButton btnOption2 = rootView.findViewById(R.id.btnOption2);
         MaterialButton btnOption3 = rootView.findViewById(R.id.btnOption3);
+        MaterialSwitch switchButton = rootView.findViewById(R.id.switchBtn);
 
         optionsLayout = rootView.findViewById(R.id.optionsLayout);
         additionalTextView = rootView.findViewById(R.id.additionalTextView);
@@ -80,6 +84,44 @@ public class HomeFragment extends Fragment {
         btnOption1.setOnClickListener(v -> additionalTextView.setText(getString(R.string.carpool1)));
         btnOption2.setOnClickListener(v -> additionalTextView.setText(getString(R.string.carpool2)));
         btnOption3.setOnClickListener(v -> additionalTextView.setText(getString(R.string.carpool3)));
+        SharedPreferences Save = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String savedInput = Save.getString("userInputKey","");
+
+        if (savedInput.isEmpty()) {
+            switchButton.setVisibility(View.GONE);
+
+        } else {
+            switchButton.setVisibility(View.VISIBLE);
+
+            // savedInput 값이 존재할 때만 스위치에 리스너를 부여합니다.
+            switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // isChecked 값이 현재 스위치의 상태를 나타냅니다.
+                boolean isShow;
+                if (isChecked) {
+                    isShow = true; // 스위치가 켜진 경우
+                } else {
+                    isShow = false; // 스위치가 꺼진 경우
+                }
+
+                // Firebase에 있는 데이터 업데이트
+                db.collection("carList")
+                        .whereEqualTo("studentID", savedInput)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    db.collection("carList")
+                                            .document(document.getId())
+                                            .update("isShow", isShow)
+                                            .addOnSuccessListener(aVoid -> Log.d(TAG, "업데이트 성공"))
+                                            .addOnFailureListener(e -> Log.w(TAG, "업데이트 실패", e));
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        });
+            });
+        }
 
         return rootView;
     }
