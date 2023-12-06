@@ -4,51 +4,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/carousel_item_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
     android:foreground="?attr/selectableItemBackground"
     app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
 
-    <ImageView
+    <View
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:background="@color/md_theme_dark_onPrimaryContainer"/>
+        android:background="?attr/colorPrimaryContainer"/>
 
+    <ImageView
+        android:id="@+id/carousel_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="33dp"/>
     <TextView
         android:id="@+id/carousel_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="?attr/colorOnPrimaryContainer"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="30dp"/>
+        android:layout_marginStart="70dp"/>
     <TextView
         android:id="@+id/carousel_text_view2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:textColor="?attr/colorOnPrimaryContainer"
         android:layout_marginTop="70dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="70dp"
         android:layout_marginEnd="40dp"/>
     <TextView
-        android:id="@+id/carousel_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="50dp"/>
-    <TextView
-        android:id="@+id/carousel_subText"
+        android:id="@+id/carousel_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:layout_marginTop="70dp"
-        android:layout_marginStart="50dp"/>
-    <TextView
-        android:id="@+id/carousel_phoneNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_marginTop="85dp"
-        android:layout_marginStart="50dp"/>
+        android:textColor="?attr/colorError"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="220dp"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/carousel_cardview"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="65dp"
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="?attr/colorPrimaryContainer"
+        android:layout_marginStart="75dp">
+        <TextView
+            android:id="@+id/carousel_name"
+            android:textColor="?attr/colorOnSecondaryContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/carousel_phoneNum"
+            android:textColor="?attr/colorOnSecondaryContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="15dp"/>
+    </androidx.cardview.widget.CardView>
 
 </com.google.android.material.carousel.MaskableFrameLayout>

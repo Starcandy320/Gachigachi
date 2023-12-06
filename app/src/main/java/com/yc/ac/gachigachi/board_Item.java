@@ -1,22 +1,24 @@
 package com.yc.ac.gachigachi;
 
+import java.util.List;
+
 public class board_Item {
     private final String name;
     private final String carNumber;
     private final String phoneNumber;
     private final String address;
-    private final  boolean isShow;
+    private final List<String> timetable;
 
-    public board_Item(String name, String carNumber, String phoneNumber, String address, boolean isShow) {
+    public board_Item(String name, String carNumber, String phoneNumber, String address, List<String> timetable) {
         this.name = name;
         this.carNumber = carNumber;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.isShow = isShow;
+        this.timetable = timetable;
     }
 
-    public boolean isShow() {
-        return isShow;
+    public List<String> getTimetable() {
+        return timetable;
     }
 
     public String getAddress() {
@@ -34,4 +36,5 @@ public class board_Item {
     public String getName() {
         return name;
     }
+
 }

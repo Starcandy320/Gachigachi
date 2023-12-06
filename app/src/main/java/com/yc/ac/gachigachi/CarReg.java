@@ -1,25 +1,20 @@
 package com.yc.ac.gachigachi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CarReg extends AppCompatActivity {
@@ -29,6 +24,7 @@ public class CarReg extends AppCompatActivity {
     TextInputEditText editTextCarNumber;
     TextInputEditText editTextAddress;
     TextInputEditText editTextPhoneNumber;
+    TextInputEditText editTextStudentID;
 
     // 시간표 부분
     TextInputEditText editTextMondayArrival;
@@ -47,7 +43,7 @@ public class CarReg extends AppCompatActivity {
     MaterialButton cancelButton;
 
     // TAG String 상수 선언
-    private static final String TAG= "firestore";
+    private static final String TAG = "firestore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +55,8 @@ public class CarReg extends AppCompatActivity {
         editTextCarNumber = findViewById(R.id.editTextCarNumber);
         editTextAddress = findViewById(R.id.editTextAddress);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
-        
+        editTextStudentID = findViewById(R.id.editTextStudentID);
+
         // 시간표 부분
         editTextMondayArrival = findViewById(R.id.editTextMondayArrival);
         editTextTuesdayArrival = findViewById(R.id.editTextTuesdayArrival);
@@ -77,84 +74,56 @@ public class CarReg extends AppCompatActivity {
         cancelButton = findViewById(R.id.cancelButton);
 
 
-
         // Firestore 초기화
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // cancelButton 클릭시 동작
-        cancelButton.setOnClickListener(v -> {
-            new MaterialAlertDialogBuilder(CarReg.this)
-                    .setTitle("경고")
-                    .setMessage("입력된 정보를 저장하지 않고 뒤로 갑니다.")
-                    .setNegativeButton("취소", (dialog, which) -> {dialog.dismiss(); })
-                    .setPositiveButton("확인", (dialog, which) -> { finish(); })
-                    .show();
-        });
+        // back키 클릭시 동작
 
+
+        // cancelButton 클릭시 동작
+        cancelButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(CarReg.this)
+                .setTitle("경고")
+                .setMessage("입력된 정보를 저장하지 않고 뒤로 갑니다.")
+                .setNegativeButton("취소", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton("확인", (dialog, which) -> finish())
+                .show());
 
 
         // submitButton 클릭시 동작
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 시간표 후처리
-                Map<String, Object> mon = new HashMap<>();
-                mon.put("goSchool", editTextMondayArrival);
-                mon.put("goHome", editTextMondayDeparture);
-                mon.put("isShow_day", true);
-                Map<String, Object> tue = new HashMap<>();
-                tue.put("goSchool", editTextTuesdayArrival);
-                tue.put("goHome", editTextTuesdayDeparture);
-                tue.put("isShow_day", true);
-                Map<String, Object> wed = new HashMap<>();
-                wed.put("goSchool", editTextWednesdayArrival);
-                wed.put("goHome", editTextWednesdayDeparture);
-                wed.put("isShow_day", true);
-                Map<String, Object> thu = new HashMap<>();
-                thu.put("goSchool", editTextThursdayArrival);
-                thu.put("goHome", editTextThursdayDeparture);
-                thu.put("isShow_day", true);
-                Map<String, Object> fri = new HashMap<>();
-                fri.put("goSchool", editTextFridayArrival);
-                fri.put("goHome", editTextFridayDeparture);
-                fri.put("isShow_day", true);
-                List<Map<String, Object>> timetable = new ArrayList<>();
-                timetable.add(mon);
-                timetable.add(tue);
-                timetable.add(wed);
-                timetable.add(thu);
-                timetable.add(fri);
+        submitButton.setOnClickListener(v -> {
+            // 시간표 후처리
+            String mon = editTextMondayArrival.getText().toString() + "," + editTextMondayDeparture.getText().toString();
+            String tue = editTextTuesdayArrival.getText().toString() + "," + editTextTuesdayDeparture.getText().toString();
+            String wed = editTextWednesdayArrival.getText().toString() + "," + editTextWednesdayDeparture.getText().toString();
+            String thu = editTextThursdayArrival.getText().toString() + "," + editTextThursdayDeparture.getText().toString();
+            String fri = editTextFridayArrival.getText().toString() + "," + editTextFridayDeparture.getText().toString();
 
-                // 입력한 데이터를 받아와서 CarList 객체에 삽입
-                CarList carList = new CarList(
-                        editTextName.toString(),
-                        editTextCarNumber.toString(),
-                        editTextAddress.toString(),
-                        editTextPhoneNumber.toString(),
-                        true,
-                        timetable
-                );
+            String[] tt = {mon, tue, wed, thu, fri};
+            ArrayList<String> timetable = new ArrayList<>(Arrays.asList(tt));
 
-                // 자동 생성된 ID로 문서 생성
-                db.collection("car")
-                        .add(carList)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                                Toast.makeText(CarReg.this, "성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
-                                Toast.makeText(CarReg.this, "저장에 실패하였습니다", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
+            // 입력한 데이터를 받아와서 CarList 객체에 삽입
+            Map<String, Object> carList = new HashMap<>();
+            carList.put("name", editTextName.getText().toString());
+            carList.put("carNumber", editTextCarNumber.getText().toString());
+            carList.put("address", editTextAddress.getText().toString());
+            carList.put("phoneNumber", editTextPhoneNumber.getText().toString());
+            carList.put("isShow", true);
+            carList.put("studentID", editTextStudentID.getText().toString());
+            carList.put("timetable", timetable);
+
+            // 자동 생성된 ID로 문서 생성
+            db.collection("carList")
+                    .add(carList)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        Toast.makeText(CarReg.this, "성공적으로 저장되었습니다", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(CarReg.this, "저장에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                    });
         });
-
 
 
     }

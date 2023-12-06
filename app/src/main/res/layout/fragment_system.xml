@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/android:colorBackground"
     tools:context=".SystemFragment">
 
     <LinearLayout
@@ -15,18 +15,19 @@
         <!-- MaterialTextView 사용 -->
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:text="설정"
-            android:textSize="25sp"
+            android:textSize="23sp"
+            android:padding="12dp"
             android:gravity="center"
+            android:background="?attr/colorSecondaryContainer"
             style="@style/TextAppearance.MaterialComponents.Headline6" />
 
         <!-- 구분선 -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/dividerVertical"
-            android:layout_marginTop="10dp" />
+            android:background="?android:attr/dividerVertical" />
 
         <!-- MaterialButton을 사용하여 버튼 스타일 적용 -->
         <FrameLayout
