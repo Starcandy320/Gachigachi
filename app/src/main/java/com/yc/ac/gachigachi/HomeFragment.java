@@ -30,6 +30,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -65,7 +66,7 @@ public class HomeFragment extends Fragment {
         MaterialButton btnOption1 = rootView.findViewById(R.id.btnOption1);
         MaterialButton btnOption2 = rootView.findViewById(R.id.btnOption2);
         MaterialButton btnOption3 = rootView.findViewById(R.id.btnOption3);
-        MaterialSwitch switchButton = rootView.findViewById(R.id.switchBtn);
+        SwitchMaterial switchButton = rootView.findViewById(R.id.switchBtn);
 
         optionsLayout = rootView.findViewById(R.id.optionsLayout);
         additionalTextView = rootView.findViewById(R.id.additionalTextView);
