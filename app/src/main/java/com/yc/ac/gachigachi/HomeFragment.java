@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.TooltipCompat;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -29,7 +32,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
-import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,7 +47,9 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private static final String SWITCH_STATE_KEY = "switch_state";
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private SharedPreferences preferences;
 
     private MaterialTextView additionalTextView;
     private LinearLayout optionsLayout;
@@ -54,6 +59,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        preferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_home);
         recyclerView.setLayoutManager(new CarouselLayoutManager(new MultiBrowseCarouselStrategy()));
         recyclerView.setAdapter(new RecyclerViewAdapter());
@@ -65,7 +71,7 @@ public class HomeFragment extends Fragment {
         MaterialButton btnOption1 = rootView.findViewById(R.id.btnOption1);
         MaterialButton btnOption2 = rootView.findViewById(R.id.btnOption2);
         MaterialButton btnOption3 = rootView.findViewById(R.id.btnOption3);
-        MaterialSwitch switchButton = rootView.findViewById(R.id.switchBtn);
+        SwitchMaterial switchButton = rootView.findViewById(R.id.switchBtn);
 
         optionsLayout = rootView.findViewById(R.id.optionsLayout);
         additionalTextView = rootView.findViewById(R.id.additionalTextView);
@@ -87,23 +93,21 @@ public class HomeFragment extends Fragment {
         SharedPreferences Save = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String savedInput = Save.getString("userInputKey","");
 
+        boolean switchState = preferences.getBoolean(SWITCH_STATE_KEY, true);
+        switchButton.setChecked(switchState);
+
         if (savedInput.isEmpty()) {
             switchButton.setVisibility(View.GONE);
 
         } else {
             switchButton.setVisibility(View.VISIBLE);
 
-            // savedInput 값이 존재할 때만 스위치에 리스너를 부여합니다.
+            TooltipCompat.setTooltipText(switchButton, switchState ? "카풀 활성화" : "카풀 비활성화");
             switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                // isChecked 값이 현재 스위치의 상태를 나타냅니다.
-                boolean isShow;
-                if (isChecked) {
-                    isShow = true; // 스위치가 켜진 경우
-                } else {
-                    isShow = false; // 스위치가 꺼진 경우
-                }
 
-                // Firebase에 있는 데이터 업데이트
+                boolean isShow;
+                isShow = isChecked;
+
                 db.collection("carList")
                         .whereEqualTo("studentID", savedInput)
                         .get()
@@ -115,6 +119,8 @@ public class HomeFragment extends Fragment {
                                             .update("isShow", isShow)
                                             .addOnSuccessListener(aVoid -> Log.d(TAG, "업데이트 성공"))
                                             .addOnFailureListener(e -> Log.w(TAG, "업데이트 실패", e));
+                                    showTooltip(switchButton, isChecked);
+                                    preferences.edit().putBoolean(SWITCH_STATE_KEY, isChecked).apply();
                                 }
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
@@ -126,7 +132,15 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-      private void toggleAdditionalTextView() {
+    private void showTooltip(View view, boolean isChecked) {
+        String message = isChecked ? "카풀 활성화" : "카풀 비활성화";
+        TooltipCompat.setTooltipText(view, message);
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> TooltipCompat.setTooltipText(view, message), 3000);
+
+    }
+
+    private void toggleAdditionalTextView() {
         if (additionalTextView.getVisibility() == View.VISIBLE) {
             additionalTextView.setVisibility(View.GONE);
             optionsLayout.setVisibility(View.GONE);
