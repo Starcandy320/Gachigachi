@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginBottom="80dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp"
+        android:background="?attr/colorSecondaryContainer"
+        android:text="등교"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:paddingTop="16dp"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSecondaryContainer"
+        android:text="연암공대"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        />
 
-        <LinearLayout
-            android:id="@+id/top_view"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginBottom="80dp">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textview.MaterialTextView
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_gs"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="?attr/colorSecondaryContainer"
-                android:text="등교"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:paddingTop="16dp"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorSecondaryContainer"
-                android:text="연암공대"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="12sp"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                />
+                android:layout_height="wrap_content" />
 
-        </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_gs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/top_view" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
 
-    </RelativeLayout>
-</androidx.core.widget.NestedScrollView>

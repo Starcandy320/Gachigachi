@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/carousel_item_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:foreground="?attr/selectableItemBackground"
     app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge">
 
     <View
@@ -44,17 +47,22 @@
         android:textColor="?attr/colorError"
         android:layout_marginTop="25dp"
         android:layout_marginStart="220dp"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/carousel_cardview"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
         android:layout_marginTop="65dp"
-        android:orientation="vertical"
-        android:layout_marginStart="90dp">
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="?attr/colorPrimaryContainer"
+        android:layout_marginStart="75dp">
         <TextView
             android:id="@+id/carousel_name"
             android:textColor="?attr/colorOnSecondaryContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
             android:textSize="18sp"/>
         <TextView
             android:id="@+id/carousel_phoneNum"
@@ -62,7 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:layout_marginTop="5dp"/>
-    </LinearLayout>
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="15dp"/>
+    </androidx.cardview.widget.CardView>
 
 </com.google.android.material.carousel.MaskableFrameLayout>

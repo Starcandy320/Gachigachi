@@ -2,38 +2,39 @@ package com.yc.ac.gachigachi;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-
 import android.content.Context;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.Switch;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.TooltipCompat;
 import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
@@ -41,7 +42,9 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private static final String SWITCH_STATE_KEY = "switch_state";
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private SharedPreferences preferences;
 
     private MaterialTextView additionalTextView;
     private LinearLayout optionsLayout;
@@ -51,6 +54,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        preferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_home);
         recyclerView.setLayoutManager(new CarouselLayoutManager(new MultiBrowseCarouselStrategy()));
         recyclerView.setAdapter(new RecyclerViewAdapter());
@@ -59,7 +63,15 @@ public class HomeFragment extends Fragment {
         MaterialButton btnNotice = rootView.findViewById(R.id.btnNotice);
         MaterialButton btnCalendar = rootView.findViewById(R.id.btnCalendar);
         MaterialButton btnLibrary = rootView.findViewById(R.id.btnLibrary);
-        TextView Txt1 = rootView.findViewById(R.id.Txt1);
+        MaterialButton btnOption1 = rootView.findViewById(R.id.btnOption1);
+        MaterialButton btnOption2 = rootView.findViewById(R.id.btnOption2);
+        MaterialButton btnOption3 = rootView.findViewById(R.id.btnOption3);
+        SwitchMaterial switchButton = rootView.findViewById(R.id.switchBtn);
+
+        optionsLayout = rootView.findViewById(R.id.optionsLayout);
+        additionalTextView = rootView.findViewById(R.id.additionalTextView);
+        btnWrite = rootView.findViewById(R.id.btnWrite);
+
         btnHome.setOnClickListener(v -> openChromeCustomTab("https://www.yc.ac.kr/yonam/web/main/mainPage.do"));
 
         btnNotice.setOnClickListener(v -> openChromeCustomTab("https://www.yc.ac.kr/yonam/web/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_000000000590"));
@@ -68,29 +80,29 @@ public class HomeFragment extends Fragment {
 
         btnLibrary.setOnClickListener(v -> openChromeCustomTab("http://ycc4.yc.ac.kr/Cheetah/YONAM/Index/"));
 
-        //로컬값 불러오기
+        btnWrite.setOnClickListener(v -> toggleAdditionalTextView());
+
+        btnOption1.setOnClickListener(v -> additionalTextView.setText(getString(R.string.carpool1)));
+        btnOption2.setOnClickListener(v -> additionalTextView.setText(getString(R.string.carpool2)));
+        btnOption3.setOnClickListener(v -> additionalTextView.setText(getString(R.string.carpool3)));
         SharedPreferences Save = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String savedInput = Save.getString("userInputKey","");
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        SwitchMaterial switchButton = rootView.findViewById(R.id.Stu);
+        boolean switchState = preferences.getBoolean(SWITCH_STATE_KEY, true);
+        switchButton.setChecked(switchState);
+
         if (savedInput.isEmpty()) {
             switchButton.setVisibility(View.GONE);
-            Txt1.setVisibility(View.GONE);
+
         } else {
             switchButton.setVisibility(View.VISIBLE);
-            Txt1.setVisibility(View.VISIBLE);
-            // savedInput 값이 존재할 때만 스위치에 리스너를 부여합니다.
-            switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                // isChecked 값이 현재 스위치의 상태를 나타냅니다.
-                boolean isShow;
-                if (isChecked) {
-                    isShow = true; // 스위치가 켜진 경우
-                } else {
-                    isShow = false; // 스위치가 꺼진 경우
-                }
 
-                // Firebase에 있는 데이터 업데이트
+            TooltipCompat.setTooltipText(switchButton, switchState ? "카풀 활성화" : "카풀 비활성화");
+            switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+                boolean isShow;
+                isShow = isChecked;
+
                 db.collection("carList")
                         .whereEqualTo("studentID", savedInput)
                         .get()
@@ -102,6 +114,8 @@ public class HomeFragment extends Fragment {
                                             .update("isShow", isShow)
                                             .addOnSuccessListener(aVoid -> Log.d(TAG, "업데이트 성공"))
                                             .addOnFailureListener(e -> Log.w(TAG, "업데이트 실패", e));
+                                    showTooltip(switchButton, isChecked);
+                                    preferences.edit().putBoolean(SWITCH_STATE_KEY, isChecked).apply();
                                 }
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
@@ -109,10 +123,19 @@ public class HomeFragment extends Fragment {
                         });
             });
         }
+
         return rootView;
     }
 
-      private void toggleAdditionalTextView() {
+    private void showTooltip(View view, boolean isChecked) {
+        String message = isChecked ? "카풀 활성화" : "카풀 비활성화";
+        TooltipCompat.setTooltipText(view, message);
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> TooltipCompat.setTooltipText(view, message), 3000);
+
+    }
+
+    private void toggleAdditionalTextView() {
         if (additionalTextView.getVisibility() == View.VISIBLE) {
             additionalTextView.setVisibility(View.GONE);
             optionsLayout.setVisibility(View.GONE);
@@ -140,6 +163,7 @@ public class HomeFragment extends Fragment {
             private final TextView carouselName;
             private final TextView carouselPhoneNum;
             private final TextView carouselTime;
+            private final CardView cardView;
 
             public ViewHolderClass(View itemView) {
                 super(itemView);
@@ -149,30 +173,14 @@ public class HomeFragment extends Fragment {
                 carouselTime = itemView.findViewById(R.id.carousel_time);
                 carouselPhoneNum = itemView.findViewById(R.id.carousel_phoneNum);
                 carouselImageView = itemView.findViewById(R.id.carousel_image_view);
+                cardView = itemView.findViewById(R.id.carousel_cardview);
 
                 itemView.setOnClickListener(v -> {
                     if (getAdapterPosition() == 0) {
                         Intent intent = new Intent(v.getContext(), CarReg.class);
                         v.getContext().startActivity(intent);
                     }
-                    else if (getAdapterPosition() == 1) {
-                        FragmentManager fragmentManager = ((FragmentActivity) v.getContext()).getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, new GsFragment());
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        BottomNavigationView bottomNavigationView = ((Activity) v.getContext()).findViewById(R.id.bottom_navigation);
-                        bottomNavigationView.setSelectedItemId(R.id.menu_gs_fragment);
-                    }
-                    else if (getAdapterPosition() == 2) {
-                        FragmentManager fragmentManager = ((FragmentActivity) v.getContext()).getSupportFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, new GhFragment());
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        BottomNavigationView bottomNavigationView = ((Activity) v.getContext()).findViewById(R.id.bottom_navigation);
-                        bottomNavigationView.setSelectedItemId(R.id.menu_gh_fragment);
-                    }
+
                 });
             }
         }
@@ -197,11 +205,13 @@ public class HomeFragment extends Fragment {
             if (position == 1) {
                 holder.carouselImageView.setImageResource(R.drawable.assignment);
                 holder.carouselTime.setText(getDay());
+                holder.cardView.setVisibility(View.VISIBLE);
                 loadRandomFirebaseData(holder);
             }
             if (position == 2){
                 holder.carouselImageView.setImageResource(R.drawable.assignment);
                 holder.carouselTime.setText(getDay());
+                holder.cardView.setVisibility(View.VISIBLE);
                 loadRandomFirebaseData(holder);
             }
         }
