@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
@@ -20,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CarReg extends AppCompatActivity {
+    // 로컬 데이터 부분
+    SharedPreferences StudentId;
+    SharedPreferences.Editor editor;
 
     // 일반 정보 부분
     TextInputEditText editTextName;
@@ -27,9 +31,6 @@ public class CarReg extends AppCompatActivity {
     TextInputEditText editTextAddress;
     TextInputEditText editTextPhoneNumber;
     TextInputEditText editTextStudentID;
-    //로컬 저장 부문
-    SharedPreferences StudentId;
-    SharedPreferences.Editor editor;
 
     // 시간표 부분
     TextInputEditText editTextMondayArrival;
@@ -54,6 +55,7 @@ public class CarReg extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_reg);
+        // 로컬 저장 부분
         StudentId = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         editor = StudentId.edit();
         // 일반 정보 부분
@@ -84,7 +86,21 @@ public class CarReg extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // back키 클릭시 동작
-
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            private long backKeyPressedTime = 0;
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
+                    backKeyPressedTime = System.currentTimeMillis();
+                    Toast.makeText(CarReg.this, "뒤로 가기 버튼을 두번 누르시면 저장하지 않고 뒤로 갑니다.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (System.currentTimeMillis() <= backKeyPressedTime + 2500) {
+                    finish();
+                }
+            }
+        };
 
         // cancelButton 클릭시 동작
         cancelButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(CarReg.this)
@@ -116,7 +132,7 @@ public class CarReg extends AppCompatActivity {
             carList.put("isShow", true);
             carList.put("studentID", editTextStudentID.getText().toString());
             carList.put("timetable", timetable);
-            //로컬 저장 부분
+            //로컬 데이터 저장
             String StuId = editTextStudentID.getText().toString();
             editor.putString("userInputKey", StuId);
             editor.apply();
