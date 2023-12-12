@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
@@ -85,7 +86,21 @@ public class CarReg extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // back키 클릭시 동작
-
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            private long backKeyPressedTime = 0;
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
+                    backKeyPressedTime = System.currentTimeMillis();
+                    Toast.makeText(CarReg.this, "뒤로 가기 버튼을 두번 누르시면 저장하지 않고 뒤로 갑니다.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (System.currentTimeMillis() <= backKeyPressedTime + 2500) {
+                    finish();
+                }
+            }
+        };
 
         // cancelButton 클릭시 동작
         cancelButton.setOnClickListener(v -> new MaterialAlertDialogBuilder(CarReg.this)
