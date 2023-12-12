@@ -19,9 +19,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class SwipeCall extends ItemTouchHelper.Callback {
     private final Context context;
-    private final gs_ListAdapter adapter;
+    private final listAdapter adapter;
 
-    public SwipeCall(Context context, gs_ListAdapter adapter) {
+    public SwipeCall(Context context, listAdapter adapter) {
         this.context = context;
         this.adapter = adapter;
     }
@@ -57,10 +57,7 @@ public class SwipeCall extends ItemTouchHelper.Callback {
         new MaterialAlertDialogBuilder(context)
                 .setTitle("신고 메시지")
                 .setMessage(phoneNumber + " 번호가 신고되었습니다.")
-                .setPositiveButton("확인", (dialog, which) -> {
-                    // 확인 버튼을 누르면 어떤 동작을 추가할 수 있습니다.
-                    dialog.dismiss();
-                })
+                .setPositiveButton("확인", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 

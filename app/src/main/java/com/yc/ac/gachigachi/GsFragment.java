@@ -34,9 +34,9 @@ public class GsFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view_gs);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // Firestore에서 특정 필드만 가져오기
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("carList")
+                .whereEqualTo("isShow", true)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -48,11 +48,20 @@ public class GsFragment extends Fragment {
                             String carNumber = document.getString("carNumber");
                             String phoneNumber = document.getString("phoneNumber");
 
-                            board_Item item = new board_Item(name, carNumber, phoneNumber, address);
+                            Object timetableObject = document.get("timetable");
+                            List<String> timetable = new ArrayList<>();
+                            if (timetableObject instanceof List<?>) {
+                                for (Object entry : (List<?>) timetableObject) {
+                                    if (entry instanceof String) {
+                                        timetable.add((String) entry);
+                                    }
+                                }
+                            }
+                            board_Item item = new board_Item(name, carNumber, phoneNumber, address, timetable);
                             goSchool.add(item);
                         }
 
-                        gs_ListAdapter adapter1 = new gs_ListAdapter(goSchool);
+                        listAdapter adapter1 = new listAdapter(goSchool, this::firstNumber);
                         recyclerView.setAdapter(adapter1);
 
                         SwipeCall swipeCall = new SwipeCall(requireContext(), adapter1);
@@ -65,5 +74,14 @@ public class GsFragment extends Fragment {
                 });
 
         return rootView;
+    }
+
+    private String firstNumber(String input) {
+        String[] parts = input.split(",");
+        if (parts.length > 0) {
+            return parts[0];
+        } else {
+            return "";
+        }
     }
 }

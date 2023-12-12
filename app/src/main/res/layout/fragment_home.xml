@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -36,51 +37,75 @@
         android:layout_marginTop="38dp"
         android:layout_marginEnd="8dp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/recyclerView"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnHome"
-            app:icon="@drawable/btnhome"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="44dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            app:cornerRadius="28dp"
-            app:iconGravity="textTop" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/recyclerView_home"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_below="@id/textView" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNotice"
-            app:icon="@drawable/btnnotice"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="44dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            app:cornerRadius="28dp"
-            app:iconGravity="textTop" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCalendar"
-            app:icon="@drawable/btncalendar"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="44dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            app:cornerRadius="28dp"
-            app:iconGravity="textTop" />
 
+        <LinearLayout
+            android:id="@+id/liear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/recyclerView_home"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnHome"
+                app:icon="@drawable/btnhome"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="44dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                app:cornerRadius="28dp"
+                app:iconGravity="textTop" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNotice"
+                app:icon="@drawable/btnnotice"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="44dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                app:cornerRadius="28dp"
+                app:iconGravity="textTop" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCalendar"
+                app:icon="@drawable/btncalendar"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="44dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                app:cornerRadius="28dp"
+                app:iconGravity="textTop" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLibrary"
+                app:icon="@drawable/btnlibrary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="44dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
+                app:cornerRadius="28dp"
+                app:iconGravity="textTop" />
+        </LinearLayout>
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLibrary"
-            app:icon="@drawable/btnlibrary"
+            android:id="@+id/btnWrite"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="44dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/liear"
+            android:textSize="18sp"
+            app:icon="@drawable/more"
+            app:iconGravity="end"
             app:cornerRadius="28dp"
             app:iconGravity="textTop" />
 
@@ -111,3 +136,4 @@
         android:textSize="18dp"
         android:textStyle="bold" />
 </RelativeLayout>
+
